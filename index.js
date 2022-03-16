@@ -29,7 +29,7 @@ function sendToMysql(request, response) {
         if (path != undefined && ipaddr != undefined) {
             writeMysql.writeMysql(path, ipaddr);
         }
-       // console.log('666');
+        // console.log('666');
     }
     //response.writeHead(200, { 'Content-Type': 'text/plain' });
 
@@ -40,17 +40,21 @@ function sendToMysql(request, response) {
 
 function main(request, response) {
 
-    const url=URL.parse(request.url, true);
+    const url = URL.parse(request.url, true);
     var action = url.query.a;
     let path = url.query.path;
     let ipaddr = url.query.ip;
-    console.log(url.query);
+
+
+    log(request);
+    //console.log(url.query);
+    //console.log(`${request.ip.toString()}:${url.query.toString()}`);
     if (action === 'mysql') {
 
         if (path != undefined && ipaddr != undefined) {
             writeMysql.writeMysql(path, ipaddr);
         }
-      //  console.log('666');
+        //  console.log('666');
     }
     response.set("Access-Control-Allow-Origin", "*",);
     response.send(200, 'Hello World!\n');
@@ -74,3 +78,19 @@ process.on('uncaughtException', function (err) {
     //打印出错误的调用栈方便调试
     //console.log(err.stack);
 });
+
+let logfile = fs.createWriteStream("./runtime.log", {
+    flags: "a",
+    encoding: "utf-8"
+});
+let logout = new console.Console(logfile);
+function log(request) {
+    let moment=require('moment');
+    const url = URL.parse(request.url, true);
+    var loginfo = JSON.stringify(url.query);
+    loginfo = JSON.parse(loginfo);
+    loginfo["reqIP"] = request.ip;
+    loginfo["logTime"]=moment().format("YYYY-MM-DD HH:mm:ss");
+    console.log(loginfo);
+    logout.log(`${JSON.stringify(loginfo)},`);
+}

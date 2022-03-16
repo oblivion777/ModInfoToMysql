@@ -34,7 +34,11 @@ function setIpInfo(ip = "") {
 };
 
 function toMysql(info) {
-    connectMysql.query(`UPDATE ip SET country="${info.country}",city="${info.city}" WHERE ip="${info.query}"`, function (err, result) {
+    let sql=`UPDATE ip SET country="${info.country}",
+    city="${info.city}",region="${info.regionName}",
+    isp="${info.isp}" WHERE ip="${info.query}"`;
+
+    connectMysql.query(sql, function (err, result) {
         //console.log(result);
     });
 }

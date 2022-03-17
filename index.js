@@ -55,6 +55,9 @@ function main(request, response) {
             writeMysql.writeMysql(path, ipaddr);
         }
         //  console.log('666');
+    } else {
+        //禁止不带参数的URL连接
+        return;
     }
     response.set("Access-Control-Allow-Origin", "*",);
     response.send(200, 'Hello World!\n');
@@ -85,12 +88,12 @@ let logfile = fs.createWriteStream("./runtime.log", {
 });
 let logout = new console.Console(logfile);
 function log(request) {
-    let moment=require('moment');
+    let moment = require('moment');
     const url = URL.parse(request.url, true);
     var loginfo = JSON.stringify(url.query);
     loginfo = JSON.parse(loginfo);
     loginfo["reqIP"] = request.ip;
-    loginfo["logTime"]=moment().format("YYYY-MM-DD HH:mm:ss");
+    loginfo["logTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
     console.log(loginfo);
     logout.log(`${JSON.stringify(loginfo)},`);
 }

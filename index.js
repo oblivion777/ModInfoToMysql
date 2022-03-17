@@ -45,7 +45,7 @@ function main(request, response) {
     //解密字符串
     const decryptStr=MyAES.decryptStr(url.query.c,url.query.v);
     const decryptJSON=JSON.parse(decryptStr);
-    //console.log(decryptJSON);
+    console.log("search:"+url.search);
     log(request,decryptJSON);//输出日志
     
     var action = decryptJSON.a;

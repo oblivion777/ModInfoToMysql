@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var events = require('events');
 var URL = require('url');
 var fs = require('fs');
-var mysql = require('mysql');
+var MyAES = require('./AES');
 var writeMysql = require('./writeMysql');
 var eventEmitter = new events.EventEmitter();
 
@@ -41,14 +41,16 @@ function sendToMysql(request, response) {
 function main(request, response) {
 
     const url = URL.parse(request.url, true);
-    var action = url.query.a;
-    let path = url.query.path;
-    let ipaddr = url.query.ip;
-
-
-    log(request);
-    //console.log(url.query);
-    //console.log(`${request.ip.toString()}:${url.query.toString()}`);
+    
+    //解密字符串
+    const decryptStr=MyAES.decryptStr(url.query.c,url.query.v);
+    const decryptJSON=JSON.parse(decryptStr);
+    //console.log(decryptJSON);
+    log(request,decryptJSON);//输出日志
+    
+    var action = decryptJSON.a;
+    let path = decryptJSON.path;
+    let ipaddr = decryptJSON.ip;
     if (action === 'mysql') {
 
         if (path != undefined && ipaddr != undefined) {
@@ -87,10 +89,10 @@ let logfile = fs.createWriteStream("./runtime.log", {
     encoding: "utf-8"
 });
 let logout = new console.Console(logfile);
-function log(request) {
+function log(request,decryptJSON) {
     let moment = require('moment');
     const url = URL.parse(request.url, true);
-    var loginfo = JSON.stringify(url.query);
+    var loginfo = JSON.stringify(decryptJSON);
     loginfo = JSON.parse(loginfo);
     loginfo["reqIP"] = request.ip;
     loginfo["logTime"] = moment().format("YYYY-MM-DD HH:mm:ss");

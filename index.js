@@ -88,9 +88,9 @@ http.createServer(app).listen(7232);
 console.log('Server running at http://127.0.0.1:8787/');
 
 
-process.on('uncaughtException', function (err, request) {
+process.on('uncaughtException', function (err) {
     //打印出错误
-    console.log(request);
+    //console.log(err);
     //打印出错误的调用栈方便调试
     //console.log(err.stack);
 });
@@ -107,6 +107,6 @@ function log(request, decryptJSON) {
     loginfo = JSON.parse(loginfo);
     loginfo["reqIP"] = request.ip;
     loginfo["logTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
-    console.log(loginfo);
+    console.log(JSON.stringify(loginfo));
     logout.log(`${JSON.stringify(loginfo)},`);
 }

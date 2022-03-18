@@ -44,7 +44,7 @@ function main(request, response) {
 
     //解密字符串
     if (url.query.c == undefined || url.query.v == undefined) {
-        log(request, {warn:"URL参数有误"});
+        log(request, { warn: "URL参数有误" });
         return;
     }
     const decryptStr = MyAES.decryptStr(url.query.c, url.query.v);
@@ -52,7 +52,7 @@ function main(request, response) {
     try {
         decryptJSON = JSON.parse(decryptStr);
     } catch (error) {
-        log(request, {warn:"无法解密字符串"});
+        log(request, { warn: "无法解密字符串" });
         return;
     }
 
@@ -85,7 +85,7 @@ https.createServer(httpsOption, app).listen(7233);
 http.createServer(app).listen(7232);
 
 // 终端打印如下信息
-console.log('Server running at http://127.0.0.1:8787/');
+console.log('Server running,http(7232) https(7233)');
 
 
 process.on('uncaughtException', function (err) {

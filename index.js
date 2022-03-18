@@ -41,13 +41,24 @@ function sendToMysql(request, response) {
 function main(request, response) {
 
     const url = URL.parse(request.url, true);
-    
+
     //解密字符串
-    const decryptStr=MyAES.decryptStr(url.query.c,url.query.v);
-    const decryptJSON=JSON.parse(decryptStr);
-    console.log("search:"+url.search);
-    log(request,decryptJSON);//输出日志
-    
+    if (url.query.c == undefined || url.query.v == undefined) {
+        log(request, {warn:"URL参数有误"});
+        return;
+    }
+    const decryptStr = MyAES.decryptStr(url.query.c, url.query.v);
+    var decryptJSON;
+    try {
+        decryptJSON = JSON.parse(decryptStr);
+    } catch (error) {
+        log(request, {warn:"无法解密字符串"});
+        return;
+    }
+
+    console.log("search:" + url.search);
+    log(request, decryptJSON);//输出日志
+
     var action = decryptJSON.a;
     let path = decryptJSON.path;
     let ipaddr = decryptJSON.ip;
@@ -77,9 +88,9 @@ http.createServer(app).listen(7232);
 console.log('Server running at http://127.0.0.1:8787/');
 
 
-process.on('uncaughtException', function (err) {
+process.on('uncaughtException', function (err, request) {
     //打印出错误
-    //console.log(err);
+    console.log(request);
     //打印出错误的调用栈方便调试
     //console.log(err.stack);
 });
@@ -89,7 +100,7 @@ let logfile = fs.createWriteStream("./runtime.log", {
     encoding: "utf-8"
 });
 let logout = new console.Console(logfile);
-function log(request,decryptJSON) {
+function log(request, decryptJSON) {
     let moment = require('moment');
     const url = URL.parse(request.url, true);
     var loginfo = JSON.stringify(decryptJSON);

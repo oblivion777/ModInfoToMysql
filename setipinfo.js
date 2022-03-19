@@ -1,6 +1,6 @@
 var http = require('http');
 var https = require('https');
-var mysql = require('mysqls');
+var mysql = require('mysql2');
 var fs = require('fs');
 
 const mysqlConfig = JSON.parse(fs.readFileSync("./ssl-key/mysql-key.json"));

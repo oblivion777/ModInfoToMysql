@@ -19,6 +19,7 @@ connectMysql.query(`SELECT ip FROM ip WHERE country IS NULL`, function (err, res
 });
 
 function setIpInfo(ip = "") {
+    //获取get请求body
     https.get(`https://ip.remin.cc/json/${ip}`, function (res) {
         let data = "";
         res.on("data", function (chunk) {

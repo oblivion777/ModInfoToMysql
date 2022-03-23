@@ -30,7 +30,7 @@ function toCloudFlare() {
             //console.log(result[key]);
             resJSON[result[key].ip] = result[key].count;
         }
-        fs.writeFile("./JSON-CloudFlare/uv.json", JSON.stringify(resJSON), function (error) {
+        fs.writeFile("./JSON-CloudFlare/uv.json", JSON.stringify(resJSON).replace(/\./g,'_'), function (error) {
             console.log("uv done!");
         });
     });

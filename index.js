@@ -18,7 +18,7 @@ function sendToMysql(request, response) {
     // 发送 HTTP 头部 
     // HTTP 状态值: 200 : OK
     // 内容类型: text/plain
-    console.log(request.body);
+    // console.log(request.body);
     let path = request.body.path;
     let ipaddr = request.body.ip;
 
@@ -56,7 +56,7 @@ function main(request, response) {
         return;
     }
 
-    console.log("search:" + url.search);
+    // console.log("search:" + url.search);
     log(request, decryptJSON);//输出日志
 
     var action = decryptJSON.a;

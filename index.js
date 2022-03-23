@@ -107,6 +107,6 @@ function log(request, decryptJSON) {
     loginfo = JSON.parse(loginfo);
     loginfo["reqIP"] = request.ip;
     loginfo["logTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
-    console.log(JSON.stringify(loginfo));
+    // console.log(JSON.stringify(loginfo));
     logout.log(`${JSON.stringify(loginfo)},`);
 }
